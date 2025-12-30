@@ -53,7 +53,7 @@ body::after {
 }
 
 main {
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
   overflow: hidden;
   z-index: 2;
@@ -91,6 +91,27 @@ main {
   opacity: 1;
   transform: translateY(0) scale(1);
   pointer-events: auto;
+}
+
+
+.screen.active {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.screen.active .screen-content {
+  max-height: calc(100vh - clamp(4rem, 16vh, 8rem));
+  margin-block: auto;
+}
+
+.screen.active .screen-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.screen.active .screen-content::-webkit-scrollbar-thumb {
+  background: rgba(249, 246, 242, 0.25);
+  border-radius: 999px;
 }
 
 .screen-content {
@@ -213,6 +234,9 @@ main {
   display: block;
   width: 100%;
   height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  max-height: 70vh;
   background: rgba(0, 0, 0, 0.9);
 }
 
@@ -282,6 +306,7 @@ main {
   pointer-events: none;
 }
 
+
 .screen--after-video .screen-content {
   gap: clamp(1.8rem, 4vw, 2.6rem);
 }
@@ -295,6 +320,8 @@ main {
   display: grid;
   gap: clamp(1.1rem, 3vw, 1.6rem);
   text-align: left;
+  position: relative;
+  padding-right: 0.4rem;
 }
 
 .after-video-message p {
@@ -308,6 +335,45 @@ main {
   font-weight: 600;
   color: var(--amber);
   text-align: right;
+}
+
+.after-video-audio {
+  margin-top: clamp(1.8rem, 5vw, 2.8rem);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.audio-card {
+  width: min(100%, 420px);
+  padding: 1.6rem 1.8rem;
+  border-radius: 1.6rem;
+  background: rgba(12, 19, 31, 0.75);
+  border: 1px solid rgba(249, 246, 242, 0.18);
+  box-shadow: 0 22px 45px rgba(7, 14, 26, 0.4);
+  backdrop-filter: blur(12px);
+  display: grid;
+  gap: 0.65rem;
+  text-align: left;
+}
+
+.audio-card__label {
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(249, 246, 242, 0.6);
+}
+
+.audio-card__title {
+  font-size: 1.3rem;
+  letter-spacing: 0.08em;
+  color: var(--milk);
+}
+
+.audio-card audio {
+  width: 100%;
+  margin-top: 0.4rem;
+  filter: drop-shadow(0 8px 18px rgba(6, 12, 20, 0.45));
 }
 
 .screen--pause {
@@ -366,15 +432,30 @@ main {
 @media (max-width: 480px) {
   .screen {
     padding: clamp(2.2rem, 12vh, 4.2rem) 1.4rem;
+    justify-content: flex-start;
+    align-items: stretch;
+  }
+
+  .screen.active {
+    padding-bottom: 3.8rem;
   }
 
   .screen-content {
     width: 100%;
     padding: clamp(1.6rem, 6vw, 2.2rem);
+    max-height: none;
   }
 
   .cta {
     width: 100%;
+  }
+
+  .video-wrapper {
+    width: 100%;
+  }
+
+  .video-wrapper video {
+    max-height: none;
   }
 
   .video-overlay {
