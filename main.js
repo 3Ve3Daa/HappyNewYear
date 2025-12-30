@@ -4,6 +4,7 @@ const sceneVideo = sceneWrapper?.querySelector('video');
 const continueBtn = document.querySelector("[data-action='continue']");
 const storyScreen = document.querySelector("[data-screen='story']");
 const afterVideoScreen = document.querySelector("[data-screen='after-video']");
+const afterAudio = document.querySelector("[data-audio='after']");
 const snowCanvas = document.getElementById('snowCanvas');
 const ctx = snowCanvas.getContext('2d');
 
@@ -17,6 +18,40 @@ let snowEnabled = true;
 let resizeTimer = null;
 let sceneIsPlaying = false;
 let sceneHasStarted = false;
+let audioHasPlayed = false;
+
+function tryPlayAfterAudio(force = false) {
+  if (!afterAudio || audioHasPlayed) {
+    return;
+  }
+
+  const shouldPlay = force || document.visibilityState === 'visible';
+  if (!shouldPlay) {
+    return;
+  }
+
+  afterAudio
+    .play()
+    .then(() => {
+      audioHasPlayed = true;
+    })
+    .catch(() => {
+      const card = afterAudio.closest('.audio-card');
+      if (!card || card.querySelector('.audio-unlock')) {
+        return;
+      }
+
+      const playButton = document.createElement('button');
+      playButton.type = 'button';
+      playButton.className = 'audio-unlock';
+      playButton.textContent = 'Включить музыку';
+      playButton.addEventListener('click', () => {
+        tryPlayAfterAudio(true);
+      });
+
+      card.appendChild(playButton);
+    });
+}
 
 function pixelRatio() {
   return Math.min(window.devicePixelRatio || 1, 1.6);
@@ -121,12 +156,20 @@ function showScreen(nextIndex) {
   if (previous.dataset.screen === 'video-scene') {
     pauseScene();
     sceneWrapper?.classList.remove('playing');
+  } else if (previous.dataset.screen === 'after-video' && afterAudio) {
+    afterAudio.pause();
+    afterAudio.currentTime = 0;
   }
 
   previous.classList.remove('active');
   currentIndex = nextIndex;
   const target = screens[currentIndex];
   target.classList.add('active');
+  target.scrollTop = 0;
+
+  if (target.dataset.screen === 'after-video') {
+    tryPlayAfterAudio();
+  }
 }
 
 function goNext() {
@@ -190,6 +233,12 @@ if (sceneVideo) {
   });
 }
 
+if (afterAudio) {
+  afterAudio.addEventListener('play', () => {
+    audioHasPlayed = true;
+  });
+}
+
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(() => {
@@ -210,5 +259,11 @@ window.addEventListener('load', () => {
   if (snowEnabled) {
     resizeCanvas();
     startSnow();
+  }
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && screens[currentIndex]?.dataset.screen === 'after-video') {
+    tryPlayAfterAudio();
   }
 });
