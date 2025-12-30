@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Наш новый год</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Quicksand:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="snowCanvas" class="snow-canvas" aria-hidden="true"></canvas>
+  <main id="sequence">
+    <section class="screen screen--intro active" data-screen="intro">
+      <div class="screen-content">
+        <h1>
+          <span>Этот год стал теплее,</span>
+          <span>потому что в нём была ты.</span>
+        </h1>
+        <button class="cta" type="button" data-action="continue">Продолжить</button>
+      </div>
+    </section>
+
+    <section class="screen screen--story" data-screen="story">
+      <div class="screen-content">
+        <span class="whisper">к декабрю всё складывается неслучайно</span>
+        <h2>
+          <span>Я искал одну сцену</span>
+          <span>и нашёл в ней нас.</span>
+        </h2>
+        <p>
+          В ту ночь я пошёл на мультфильм, который сам бы не выбрал. Только ради одной сцены.
+          Потому что она вдруг напомнила о нас — о том, как ты смеёшься, и о том, как мне рядом с тобой спокойно.
+        </p>
+        <p class="whisper">коснись экрана, когда будешь готова продолжить</p>
+      </div>
+    </section>
+
+    <section class="screen screen--video-scene" data-screen="video-scene">
+      <div class="screen-content">
+        <h2>Та самая сцена</h2>
+        <div class="video-wrapper" data-video-wrapper="scene" data-video-type="html5">
+          <video id="sceneVideo" class="scene-video" preload="metadata" playsinline controls>
+            <source src="media/happy.mp4" type="video/mp4" />
+          </video>
+          <div class="video-overlay">Нажми, чтобы посмотреть</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen screen--after-video" data-screen="after-video">
+      <div class="screen-content">
+        <h2>Этот момент напомнил мне о тебе.</h2>
+        <div class="after-video-message">
+          <p>О том, насколько ты для меня важна и как сильно я тебя ценю.</p>
+          <p>Ты для меня не просто человек. Ты тот, о ком хочется заботиться, кому хочется помогать и кого хочется поддерживать в любой момент.</p>
+          <p>Мне важно, чтобы ты знала: я всегда буду рядом. Когда всё хорошо и особенно тогда, когда тяжело.</p>
+          <p>Мне нравится быть рядом с тобой. Мне нравишься ты. И я не хочу больше это скрывать.</p>
+          <p class="after-video-message__final">Я просто хотел, чтобы ты это знала.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>
