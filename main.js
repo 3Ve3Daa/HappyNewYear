@@ -157,14 +157,17 @@ function playScene() {
 continueBtn.addEventListener('click', goNext);
 storyScreen.addEventListener('click', goNext);
 
-sceneWrapper.addEventListener('click', () => {
+sceneWrapper.addEventListener('click', (event) => {
   if (!sceneVideo) {
     return;
   }
 
-  if (!sceneHasStarted) {
-    playScene();
+  if (sceneHasStarted) {
+    return;
   }
+
+  event.preventDefault();
+  playScene();
 });
 
 if (sceneVideo) {
